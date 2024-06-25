@@ -1,0 +1,41 @@
+#!/usr/bin/env nextflow
+
+import groovy.yaml.YamlSlurper
+
+workflow YAML_INPUT {
+    take:
+    input_file          // params.input
+
+    main:
+    ch_versions         = Channel.empty()
+
+    inputs              = new YamlSlurper().parse(file(params.input))
+
+    //
+    // LOGIC: Building reference channel
+    //
+    sample_id           = Channel.of(inputs.assembly.sample_id)
+    defined_group       = Channel.of(inputs.assembly.defined_class)
+    assembly_version    = Channel.of(inputs.assembly.assem_version)
+    reference           = Channel.fromPath(inputs.reference_file, checkIfExists: true)
+
+    sample_id
+        .combine(defined_group)
+        .combine(assembly_version)
+        .combine(reference)
+        .map { sid, grp, ver, ref ->
+            tuple ( [   id:         "${sid}_${ver}",
+                        class:      grp             ],
+                    ref
+            )
+        }
+        .set { reference_ch }
+
+    emit:
+    reference_ch
+    align_data_dir      = Channel.of(inputs.alignment.data_dir)
+    align_geneset       = Channel.of(inputs.alignment.geneset_id)
+    intron_size         = Channel.of(inputs.intron.size)
+
+    versions            = ch_versions.ifEmpty(null)
+}

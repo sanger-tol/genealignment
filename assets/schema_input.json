@@ -7,27 +7,64 @@
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
-                "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
-                "meta": ["id"]
+            "assembly": {
+                "type": "object",
+                "properties": {
+                    "sample_id": {
+                        "type": "string",
+                        "errorMessage": "Sample name must be provided and cannot contain spaces"
+                    },
+                    "latin_name": {
+                        "type": "string",
+                        "errorMessage": "The scientific name for the assembly"
+                    },
+                    "classT": {
+                        "type": "string",
+                        "errorMessage": "The Clade of the assembly. Used as the syntenic group and to complete the gene_alignment data dir."
+                    },
+                    "TicketType": {
+                        "type": "string",
+                        "errorMessage": "Not currently in use. Single word description of associated project."
+                    }
+                }
             },
-            "fastq_1": {
+            "reference_file": {
                 "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+\\.f(ast)a$",
+                "errorMessage": "Assembly input file, decompressed"
             },
-            "fastq_2": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            "alignment": {
+                "type": "object",
+                "properties": {
+                    "data_dir": {
+                        "type": "string",
+                        "errorMessage": "Gene Alignment data directory"
+                    },
+                    "common_name": {
+                        "type": "string",
+                        "errorMessage": "Not currently in use. Common identifier for group (adding bee, wasp, ant as sub division for clade)"
+                    },
+                    "geneset": {
+                        "type": "string",
+                        "errorMessage": "A csv list of organisms to run against."
+                    }
+                }
+            },
+            "intron": {
+                "type": "object",
+                "properties": {
+                    "size": {
+                        "type": "string",
+                        "errorMessage": "Base pair size of introns, defaults to 50k"
+                    }
+                }
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": [
+            "intron",
+            "alignment",
+            "reference_file",
+            "assembly"
+        ]
     }
 }
