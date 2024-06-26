@@ -36,18 +36,7 @@ workflow GENERATE_GENOME {
             )
     ch_versions     = ch_versions.mix( GNU_SORT.out.versions )
 
-
-    //
-    // MODULE: Cut out the largest scaffold size and use as comparator against 512MB
-    //          This is the cut off for TABIX using tbi indexes
-    //
-    GET_LARGEST_SCAFF (
-        GNU_SORT.out.sorted
-    )
-    ch_versions     = ch_versions.mix( GET_LARGEST_SCAFF.out.versions )
-
     emit:
-    max_scaff_size  = GET_LARGEST_SCAFF.out.scaff_size.toInteger()
     dot_genome      = GNU_SORT.out.sorted
     ref_index       = CUSTOM_GETCHROMSIZES.out.fai
     versions        = ch_versions.ifEmpty(null)
