@@ -42,7 +42,7 @@ workflow GENERATE_GENOME {
     //          This is the cut off for TABIX using tbi indexes
     //
     GET_LARGEST_SCAFF (
-        ch_genomesize
+        GNU_SORT.out.sorted
     )
     ch_versions     = ch_versions.mix( GET_LARGEST_SCAFF.out.versions )
 

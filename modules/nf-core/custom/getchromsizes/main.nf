@@ -9,7 +9,7 @@ process CUSTOM_GETCHROMSIZES {
 
     input:
     tuple val(meta), path(fasta)
-    val    suffix
+    val suffix
 
     output:
     tuple val(meta), path ("*.${suffix}"),  emit: sizes

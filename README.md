@@ -10,41 +10,41 @@
 
 ## Introduction
 
-**sanger-tol/genealignment** is a bioinformatics pipeline that ...
-
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+**sanger-tol/genealignment** is a bioinformatics pipeline that generated geneset alignments to a specified input genome. This pipeline will be used for evaluating genesets for use in TreeVal
 
 <!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
      workflows use the "tube map" design for that. See https://nf-co.re/docs/contributing/design_guidelines#examples for examples.   -->
 <!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
 
-1. Read QC ([`FastQC`](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/))
-2. Present QC for raw reads ([`MultiQC`](http://multiqc.info/))
+1. YAML_INPUT -- Parses the input yaml into Channels for downstream use.
+2. GENERATE_GENOME -- Generates a trimmed fasta index file for us in JBrowse.
+3. GENE_ALIGNMENT -- Align geneset data against the input genome.
 
 ## Usage
 
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/usage/installation) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/usage/introduction#how-to-run-a-pipeline) with `-profile test` before running the workflow on actual data.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
+Much of the information regarding running this pipeline can be found on the TreeVal usage page.
 
-First, prepare a samplesheet with your input data that looks as follows:
+The input yaml should consist of the following:
 
-`samplesheet.csv`:
-
-```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
 ```
-
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
-
--->
+assembly:
+  assem_level: scaffold
+  assem_version: 1
+  sample_id: Oscheius_DF5033
+  latin_name: to_provide_taxonomic_rank
+  defined_class: nematode
+  project_id: DTOL
+reference_file: TOLID.fasta
+alignment:
+  data_dir: /path/to/gene_alignment_data/
+  common_name: "" # For future implementation (adding bee, wasp, ant etc)
+  geneset_id: "OscheiusTipulae.ASM1342590v1,CaenorhabditisElegans.WBcel235,Gae_host.Gae"
+intron:
+  size: "50k"
+```
 
 Now, you can run the pipeline using:
 
@@ -53,7 +53,7 @@ Now, you can run the pipeline using:
 ```bash
 nextflow run sanger-tol/genealignment \
    -profile <docker/singularity/.../institute> \
-   --input samplesheet.csv \
+   --input samplesheet.yaml \
    --outdir <OUTDIR>
 ```
 
