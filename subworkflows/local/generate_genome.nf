@@ -23,13 +23,13 @@ workflow GENERATE_GENOME {
     //
     CUSTOM_GETCHROMSIZES (
         reference_file,
-        ".genome"
+        "genome"
         )
     ch_versions     = ch_versions.mix( CUSTOM_GETCHROMSIZES.out.versions )
 
 
     //
-    //
+    // MODULE: SORT THE GENOME FILE BASED ON THE LENGTH OF THE SCAFFOLD
     //
     GNU_SORT (
             CUSTOM_GETCHROMSIZES.out.sizes

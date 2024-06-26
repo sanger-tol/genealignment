@@ -1,11 +1,11 @@
 Changes in module 'nf-core/custom/getchromsizes'
 --- modules/nf-core/custom/getchromsizes/main.nf
 +++ modules/nf-core/custom/getchromsizes/main.nf
-@@ -9,12 +9,13 @@
+@@ -9,21 +9,23 @@
  
      input:
      tuple val(meta), path(fasta)
-+    val     suffix
++    val suffix
  
      output:
 -    tuple val(meta), path ("*.sizes"), emit: sizes
@@ -19,9 +19,11 @@ Changes in module 'nf-core/custom/getchromsizes'
  
      when:
      task.ext.when == null || task.ext.when
-@@ -22,8 +23,8 @@
+ 
      script:
-     def args = task.ext.args ?: ''
+-    def args = task.ext.args ?: ''
++    def prefix  = task.ext.prefix   ?: "${meta.id}"
++    def args    = task.ext.args     ?: ''
      """
 -    samtools faidx $fasta
 -    cut -f 1,2 ${fasta}.fai > ${fasta}.sizes
@@ -30,7 +32,7 @@ Changes in module 'nf-core/custom/getchromsizes'
  
      cat <<-END_VERSIONS > versions.yml
      "${task.process}":
-@@ -32,9 +33,12 @@
+@@ -32,9 +34,12 @@
      """
  
      stub:
