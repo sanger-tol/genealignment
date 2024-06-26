@@ -3,7 +3,6 @@
 //
 // MODULE IMPORT BLOCK
 //
-include { GET_LARGEST_SCAFF             } from '../../modules/local/get_largest_scaff'
 include { CUSTOM_GETCHROMSIZES          } from '../../modules/nf-core/custom/getchromsizes/main'
 include { GNU_SORT                      } from '../../modules/nf-core/gnu/sort'
 
